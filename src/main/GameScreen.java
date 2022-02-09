@@ -22,7 +22,7 @@ public class GameScreen extends JPanel {
 	public static final int SINGLE_IMG_WIDTH = 32; //pixel, larghezza immaginina
 	public static final int COLOR_LIMIT = 256;   //valore limite colori escluso
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
-	
+		
 	//costruttore
 	public GameScreen(BufferedImage img) {
 		this.img = img;
@@ -70,9 +70,12 @@ public class GameScreen extends JPanel {
 		//g.drawImage(img, 0, 0, null);
 		
 		//disegnare un elemento dello sprite atlas
-		g.drawImage(sprites.get(19), 60, 60, null);
-		//g.drawImage(img.getSubimage(9*32, 32, SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH), 50, 50 , null);
-			
+		g.drawImage(sprites.get(19), 0, 0, null);
+		g.drawImage(img.getSubimage(9*32, 32, SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH), 50, 50 , null);
+		
+		//disegnare le immaginine a caso
+		//randomImgsToScreen(g);
+		
 	}
 	
 	/**
@@ -101,6 +104,23 @@ public class GameScreen extends JPanel {
 		int blue = random.nextInt(COLOR_LIMIT);
 	
 		return new Color(red, green, blue);
+	}
+	
+	/**
+	 *utilizzato per riempire a caso la finestra con le immaginine
+	 */
+	private int getRandomInt() {
+		return random.nextInt(100);
+	}
+	
+	private void randomImgsToScreen(Graphics g) {
+		
+		for(int i = 0; i<20; i++) {
+			for(int j = 0; j<20; j++) {
+				g.drawImage(sprites.get(getRandomInt()), i*SINGLE_IMG_WIDTH, j*SINGLE_IMG_WIDTH, null);
+			}
+		}
+		
 	}
  
 

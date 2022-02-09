@@ -37,7 +37,6 @@ public class Game extends JFrame{
 	 */
 	private void initialize() {
 		setSize(1000 , 600);
-		setVisible(true);
 		//setResizable(false);   se lo si toglie i colori cambieranno ogni volta che la finestra viene ridimensionata
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -45,6 +44,8 @@ public class Game extends JFrame{
 		//creazione e aggiunta del gameScreen al JFrame
 		this.gameScreen = new GameScreen(img);
 		this.add(gameScreen);
+		
+		setVisible(true);
 
 	}
 	
