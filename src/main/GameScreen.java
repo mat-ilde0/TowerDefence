@@ -22,7 +22,11 @@ public class GameScreen extends JPanel {
 	public static final int SINGLE_IMG_WIDTH = 32; //pixel, larghezza immaginina
 	public static final int COLOR_LIMIT = 256;   //valore limite colori escluso
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
-		
+	
+	//variabili per la gestione della velocità del repaint()
+	private long lastTime;  
+	private int frames;
+	
 	//costruttore
 	public GameScreen(BufferedImage img) {
 		this.img = img;
@@ -30,6 +34,7 @@ public class GameScreen extends JPanel {
 		loadSprites();
 		
 		this.random = new Random();
+		
 	}
 	
 	/**
@@ -70,12 +75,31 @@ public class GameScreen extends JPanel {
 		//g.drawImage(img, 0, 0, null);
 		
 		//disegnare un elemento dello sprite atlas
-		g.drawImage(sprites.get(19), 0, 0, null);
-		g.drawImage(img.getSubimage(9*32, 32, SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH), 50, 50 , null);
+		//g.drawImage(sprites.get(19), 0, 0, null);
+		//g.drawImage(img.getSubimage(9*32, 32, SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH), 50, 50 , null);
 		
 		//disegnare le immaginine a caso
-		//randomImgsToScreen(g);
+		randomImgsToScreen(g);
 		
+		callFPS();
+		
+		
+	}
+	
+	/**
+	 * metodo per visualizzare gli fps
+	 */
+	private void callFPS() {
+		frames++;
+		/*
+		 * ogni volta che passa un secondo vengono mostrati gli fps.
+		 */
+		if(System.currentTimeMillis()-lastTime >= 1000) {
+			System.out.println("FPS: " + frames);
+			frames = 0;
+			lastTime = System.currentTimeMillis();
+		}
+
 	}
 	
 	/**

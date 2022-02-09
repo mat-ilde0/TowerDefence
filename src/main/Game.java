@@ -19,16 +19,25 @@ public class Game extends JFrame{
 	
 	private BufferedImage img;
 	
+	//variabili per la gestione del loop 
+	private double timePerFrame; //per quanto tempo viene visualizzato un frame
+	private long lastTimeActualFr; //tempo al quale è stato mostrato l'ultimo frame
+	
+	
 	//costruttore
 	public Game(){
 		importImg(); //viene fatto prima prer threading
 		initialize();
+		
+		timePerFrame = 1000000000.0 / 60.0; 
 	}
 	
 
 	//MAIN METHOD
 	public static void main(String[] args) {
-		Game gioco = new Game();
+		Game game = new Game();
+		
+		game.gameLoop();
 
 	}
 	
@@ -47,6 +56,23 @@ public class Game extends JFrame{
 		
 		setVisible(true);
 
+	}
+	
+	/**
+	 * metodo per la gestione del repaint() e degli fps, stabiliti a 60.
+	 */
+	private void gameLoop() {
+		/*
+		 * si controlla se il frame attuale è stato mostrato per il tempo uguale o maggiore rispetto a quello che dovrebbe essere
+		 */
+		while(true) {
+			if(System.nanoTime() - lastTimeActualFr >= timePerFrame) {
+				lastTimeActualFr = System.nanoTime();
+				repaint();
+			}else {
+				//nothing
+			}
+		}
 	}
 	
 	/**
