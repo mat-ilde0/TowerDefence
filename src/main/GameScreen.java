@@ -23,9 +23,9 @@ public class GameScreen extends JPanel {
 	public static final int COLOR_LIMIT = 256;   //valore limite colori escluso
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
 	
-	//variabili per la gestione della velocità del repaint()
+	//variabili per la verifica degli FPS
 	private long lastTime;  
-	private int frames;
+	private int frames;  
 	
 	//costruttore
 	public GameScreen(BufferedImage img) {
@@ -81,7 +81,7 @@ public class GameScreen extends JPanel {
 		//disegnare le immaginine a caso
 		randomImgsToScreen(g);
 		
-		callFPS();
+		checkFPS();
 		
 		
 	}
@@ -89,7 +89,7 @@ public class GameScreen extends JPanel {
 	/**
 	 * metodo per visualizzare gli fps
 	 */
-	private void callFPS() {
+	private void checkFPS() {
 		frames++;
 		/*
 		 * ogni volta che passa un secondo vengono mostrati gli fps.
@@ -101,6 +101,7 @@ public class GameScreen extends JPanel {
 		}
 
 	}
+	
 	
 	/**
 	 * metodo che crea una griglia di colori casuali.

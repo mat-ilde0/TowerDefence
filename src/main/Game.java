@@ -21,15 +21,24 @@ public class Game extends JFrame{
 	
 	//variabili per la gestione del loop 
 	private double timePerFrame; //per quanto tempo viene visualizzato un frame
-	private long lastTimeActualFr; //tempo al quale è stato mostrato l'ultimo frame
+	private long lastTimeActualFrm; //tempo al quale è stato mostrato l'ultimo frame
+	public static final double FPS = 120.0;
 	
+	private double timePerUpdate;
+	private long lastTimeActualUpdt;
+	public static final double UPS = 60.0;  //Update Per Second
+	
+	//variabili per la verifica degli UPS
+	private long lastTimeUPS;  
+	private int updates;
 	
 	//costruttore
 	public Game(){
 		importImg(); //viene fatto prima prer threading
 		initialize();
 		
-		timePerFrame = 1000000000.0 / 60.0; 
+		timePerFrame = 1000000000.0 / FPS; 
+		timePerUpdate = 1000000000.0 / UPS; 
 	}
 	
 
@@ -66,12 +75,45 @@ public class Game extends JFrame{
 		 * si controlla se il frame attuale è stato mostrato per il tempo uguale o maggiore rispetto a quello che dovrebbe essere
 		 */
 		while(true) {
-			if(System.nanoTime() - lastTimeActualFr >= timePerFrame) {
-				lastTimeActualFr = System.nanoTime();
+			
+			//update
+			if(System.nanoTime() - lastTimeActualUpdt >= timePerUpdate) {
+				lastTimeActualUpdt = System.nanoTime();
+				updateGame();
+				
+				checkUPS();
+			}
+			
+			//rendering
+			if(System.nanoTime() - lastTimeActualFrm >= timePerFrame) {
+				lastTimeActualFrm = System.nanoTime();
 				repaint();
 			}else {
 				//nothing
 			}
+		}
+	}
+	
+	/**
+	 * metodo per l'update del gioco
+	 */
+	private void updateGame() {
+		updates++;
+		lastTimeActualUpdt = System.nanoTime();
+		//System.out.println("Game updated!!");
+	}
+	
+	/**
+	 * metodo che controlla quanti updarte al secondo vengono fatti
+	 */
+	private void checkUPS() {
+		/*
+		 * ogni volta che passa un secondo vengono mostrati gli fps.
+		 */
+		if(System.currentTimeMillis()-lastTimeUPS >= 1000) {
+			System.out.println("UPS: " + updates);
+			updates = 0;
+			lastTimeUPS = System.currentTimeMillis();
 		}
 	}
 	
