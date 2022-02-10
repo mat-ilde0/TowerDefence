@@ -7,8 +7,13 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import inputs.KeyBoardListener;
+import inputs.MyMouseListener;
+import scenes.*;
+
 /**
  * classe che estende JFrame e che rappresenta quello che poi sarà il giococ
+ * Classe che rappresenta il controller del programma
  * @author User
  *
  */
@@ -16,9 +21,7 @@ import javax.swing.JFrame;
 public class Game extends JFrame implements Runnable{
 	
 	private GameScreen gameScreen;
-	
-	private BufferedImage img;
-	
+		
 	//variabili per la gestione del loop 
 	public static final double FPS = 120.0;
 	public static final double UPS = 60.0;  //Update Per Second
@@ -26,9 +29,19 @@ public class Game extends JFrame implements Runnable{
 	//variabili per la gestione dei Thread
 	private Thread gameThread;
 	
+	//variabili per la gestione degli input da mouse e da tastiera
+	private MyMouseListener myMouseListener;
+	private KeyBoardListener myKeyboardListener;
+	
+	//Classi 
+	private Render render;
+	private Menu menu;
+	private Playing playing;
+	private Settings settings;
+	
 	//costruttore
 	public Game(){
-		importImg(); //viene fatto prima prer threading
+		initClasses();
 		initialize();
 	}
 	
@@ -37,9 +50,41 @@ public class Game extends JFrame implements Runnable{
 	public static void main(String[] args) {
 		Game game = new Game();
 		//game.gameLoop();
+		game.initInputs();
 		game.begin();    //start mi mandava in confusione 
 		
-
+	}
+	
+	/**
+	 * metodo che si occupa di inizializzare ogni variabile riguardanti le classi appositamente
+	 * create
+	 */
+	private void initClasses() {
+		render = new Render(this);
+		gameScreen = new GameScreen(this);
+		
+		menu = new Menu(this);
+		playing = new Playing(this);
+		settings = new Settings(this);
+	}
+	
+	/**
+	 * metodo che si occupa dell'inizializzazione di ogni Listener e di aggiungerli
+	 */
+	private void initInputs() {
+		myMouseListener = new MyMouseListener();
+		myKeyboardListener = new KeyBoardListener();
+		
+		//aggiunta dei listener al gioco
+		addMouseListener(myMouseListener);
+		addMouseMotionListener(myMouseListener);
+		addKeyListener(myKeyboardListener);
+		
+		/*
+		 * The purpose of the requestFocus() is to get the focus on the 
+		 * particular component and also on the window that contains the component.
+		 */
+		requestFocus();
 	}
 	
 	/**
@@ -55,14 +100,14 @@ public class Game extends JFrame implements Runnable{
 	 * metodo che inizializza tutte gli elementi necessari per visualizzare la finestra
 	 */
 	private void initialize() {
-		setSize(1000 , 600);
-		//setResizable(false);   se lo si toglie i colori cambieranno ogni volta che la finestra viene ridimensionata
+		setResizable(false);  // se lo si toglie i colori cambieranno ogni volta che la finestra viene ridimensionata
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		//creazione e aggiunta del gameScreen al JFrame
-		this.gameScreen = new GameScreen(img);
+		//aggiunta del gameScreen al JFrame
 		this.add(gameScreen);
+		
+		pack(); //metodo che va posizionato dopo aver aggiunto il Panel.
 		
 		setVisible(true);
 
@@ -73,19 +118,6 @@ public class Game extends JFrame implements Runnable{
 	 */
 	private void updateGame() {
 		//System.out.println("Game updated!!");
-	}
-	
-	/**
-	 * metodo utile per importare immagini (contenute in res)
-	 */
-	private void importImg() {
-		InputStream fileImageStream = getClass().getResourceAsStream("/spriteatlas.png");
-		
-		try {
-			img = ImageIO.read(fileImageStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -109,19 +141,23 @@ public class Game extends JFrame implements Runnable{
 		//variabili per l'update
 		double timePerUpdate = 1000000000.0 / UPS; ;
 		long lastTimeActualUpdt = System.nanoTime();
+		//
+		long ActualTime;
 		
 		while(true) {
 			
+			ActualTime = System.nanoTime();
+			
 			//rendering
-			if(System.nanoTime() - lastTimeActualFrm >= timePerFrame) {
-				lastTimeActualFrm = System.nanoTime();
+			if(ActualTime- lastTimeActualFrm >= timePerFrame) {
+				lastTimeActualFrm = ActualTime;
 				repaint();
 				frames++;
 			}
 			
 			//update
-			if(System.nanoTime() - lastTimeActualUpdt >= timePerUpdate) {
-				lastTimeActualUpdt = System.nanoTime();
+			if(ActualTime - lastTimeActualUpdt >= timePerUpdate) {
+				lastTimeActualUpdt = ActualTime;
 				updateGame();
 				updates++;
 			}
@@ -136,6 +172,24 @@ public class Game extends JFrame implements Runnable{
 
 			
 		}
+	}
+	
+	//GETTERS and SETTERS
+	public Render getRender() {
+		return render;
+	}
+
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public Playing getPlaying() {
+		return playing;
+	}
+
+	public Settings getSettings() {
+		return settings;
 	}
 
 }
