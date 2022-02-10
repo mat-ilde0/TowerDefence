@@ -9,6 +9,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import helperPackage.LoadSave;
 import main.Game;
 
 public class Menu extends GameScene implements SceneMethods{
@@ -24,7 +25,20 @@ public class Menu extends GameScene implements SceneMethods{
 		random = new Random();
 		
 		importImg();
+		
 		loadSprites();
+	}
+
+	private void importImg() {
+		
+		InputStream fileImageStream = getClass().getResourceAsStream("/spriteatlas.png");
+				
+		try {
+			img = ImageIO.read(fileImageStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
@@ -56,19 +70,6 @@ public class Menu extends GameScene implements SceneMethods{
 	 */
 	private int getRandomInt() {
 		return random.nextInt(100);
-	}
-	
-	/**
-	 * metodo utile per importare immagini (contenute in res)
-	 */
-	private void importImg() {
-		InputStream fileImageStream = getClass().getResourceAsStream("/spriteatlas.png");
-		
-		try {
-			img = ImageIO.read(fileImageStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }
