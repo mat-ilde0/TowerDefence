@@ -22,10 +22,7 @@ public class GameScreen extends JPanel {
 	public static final int SINGLE_IMG_WIDTH = 32; //pixel, larghezza immaginina
 	public static final int COLOR_LIMIT = 256;   //valore limite colori escluso
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
-	
-	//variabili per la verifica degli FPS
-	private long lastTime;  
-	private int frames;  
+	  
 	
 	//costruttore
 	public GameScreen(BufferedImage img) {
@@ -81,25 +78,7 @@ public class GameScreen extends JPanel {
 		//disegnare le immaginine a caso
 		randomImgsToScreen(g);
 		
-		checkFPS();
 		
-		
-	}
-	
-	/**
-	 * metodo per visualizzare gli fps
-	 */
-	private void checkFPS() {
-		frames++;
-		/*
-		 * ogni volta che passa un secondo vengono mostrati gli fps.
-		 */
-		if(System.currentTimeMillis()-lastTime >= 1000) {
-			System.out.println("FPS: " + frames);
-			frames = 0;
-			lastTime = System.currentTimeMillis();
-		}
-
 	}
 	
 	

@@ -13,43 +13,44 @@ import javax.swing.JFrame;
  *
  */
 
-public class Game extends JFrame{
+public class Game extends JFrame implements Runnable{
 	
 	private GameScreen gameScreen;
 	
 	private BufferedImage img;
 	
 	//variabili per la gestione del loop 
-	private double timePerFrame; //per quanto tempo viene visualizzato un frame
-	private long lastTimeActualFrm; //tempo al quale è stato mostrato l'ultimo frame
 	public static final double FPS = 120.0;
-	
-	private double timePerUpdate;
-	private long lastTimeActualUpdt;
 	public static final double UPS = 60.0;  //Update Per Second
 	
-	//variabili per la verifica degli UPS
-	private long lastTimeUPS;  
-	private int updates;
+	//variabili per la gestione dei Thread
+	private Thread gameThread;
 	
 	//costruttore
 	public Game(){
 		importImg(); //viene fatto prima prer threading
 		initialize();
-		
-		timePerFrame = 1000000000.0 / FPS; 
-		timePerUpdate = 1000000000.0 / UPS; 
 	}
 	
 
 	//MAIN METHOD
 	public static void main(String[] args) {
 		Game game = new Game();
+		//game.gameLoop();
+		game.begin();    //start mi mandava in confusione 
 		
-		game.gameLoop();
 
 	}
 	
+	/**
+	 * inizializzazione del gameThread
+	 */
+	private void begin() {
+		gameThread = new Thread(this);
+		gameThread.start(); //metodo di thread
+	}
+
+
 	/**
 	 * metodo che inizializza tutte gli elementi necessari per visualizzare la finestra
 	 */
@@ -68,53 +69,10 @@ public class Game extends JFrame{
 	}
 	
 	/**
-	 * metodo per la gestione del repaint() e degli fps, stabiliti a 60.
-	 */
-	private void gameLoop() {
-		/*
-		 * si controlla se il frame attuale è stato mostrato per il tempo uguale o maggiore rispetto a quello che dovrebbe essere
-		 */
-		while(true) {
-			
-			//update
-			if(System.nanoTime() - lastTimeActualUpdt >= timePerUpdate) {
-				lastTimeActualUpdt = System.nanoTime();
-				updateGame();
-				
-				checkUPS();
-			}
-			
-			//rendering
-			if(System.nanoTime() - lastTimeActualFrm >= timePerFrame) {
-				lastTimeActualFrm = System.nanoTime();
-				repaint();
-			}else {
-				//nothing
-			}
-		}
-	}
-	
-	/**
 	 * metodo per l'update del gioco
 	 */
 	private void updateGame() {
-		updates++;
-		lastTimeActualUpdt = System.nanoTime();
 		//System.out.println("Game updated!!");
-	}
-	
-	/**
-	 * metodo che controlla quanti updarte al secondo vengono fatti
-	 */
-	private void checkUPS() {
-		/*
-		 * ogni volta che passa un secondo vengono mostrati gli fps.
-		 */
-		if(System.currentTimeMillis()-lastTimeUPS >= 1000) {
-			System.out.println("UPS: " + updates);
-			updates = 0;
-			lastTimeUPS = System.currentTimeMillis();
-		}
 	}
 	
 	/**
@@ -127,6 +85,56 @@ public class Game extends JFrame{
 			img = ImageIO.read(fileImageStream);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * tutto quello che deve fare il thread, in questo metodo verrà messo il gameLoop
+	 * e quindi questo comprende:
+	 * - rendering
+	 * - update
+	 * - checkFPS
+	 * - checkUPS
+	 */
+	@Override
+	public void run() {
+		//rendering variables
+		double timePerFrame = 1000000000.0 / FPS; //per quanto tempo viene visualizzato un frame
+		long lastTimeActualFrm = System.nanoTime(); //tempo al quale è stato mostrato l'ultimo frame
+		//variabili per la verifica degli FPS e UPS
+		long lastTimeCheck = System.currentTimeMillis();  //sia per UPS che FPS
+		int frames = 0;
+		int updates = 0;
+		
+		//variabili per l'update
+		double timePerUpdate = 1000000000.0 / UPS; ;
+		long lastTimeActualUpdt = System.nanoTime();
+		
+		while(true) {
+			
+			//rendering
+			if(System.nanoTime() - lastTimeActualFrm >= timePerFrame) {
+				lastTimeActualFrm = System.nanoTime();
+				repaint();
+				frames++;
+			}
+			
+			//update
+			if(System.nanoTime() - lastTimeActualUpdt >= timePerUpdate) {
+				lastTimeActualUpdt = System.nanoTime();
+				updateGame();
+				updates++;
+			}
+			
+			//checkUPS and checkFPS
+			if(System.currentTimeMillis()-lastTimeCheck >= 1000) {
+				System.out.println("FPS: " + frames + "  |  UPS: "+ updates);
+				frames = 0;
+				updates = 0;
+				lastTimeCheck = System.currentTimeMillis();
+			}
+
+			
 		}
 	}
 
