@@ -34,4 +34,19 @@ public interface SceneMethods {
 	 * le torri nel gioco.
 	 */
 	public void mouseReleased(int xCord, int yCord);
+	
+	/**
+	 * metodo che inizializza tutti i bottoni presenti
+	 */
+	public void initButtons();
+	
+	/**
+	 * metodo che si deve occupare di disegnare tutti i bottoni presenti nello stato
+	 * di gioco corrente.
+	 * @param g
+	 */
+	public void drawButtons(Graphics g);
+	
+	
+	
 }

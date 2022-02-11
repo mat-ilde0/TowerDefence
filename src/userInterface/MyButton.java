@@ -97,11 +97,22 @@ public class MyButton {
 	}
 	
 	/**
-	 * metodo che resetta il botte alla sua forma originale, prima che venisse premuto
+	 * metodo che resetta il bottone alla sua forma originale, prima che venisse premuto
 	 */
 	public void resetBooleans() {
 		this.mouseOver = false;
 		this.mousePressed = false;
+	}
+	
+	/**
+	 * metodo che imposta il colore del bottone quando ci si passa sopra.
+	 * @return
+	 */
+	public boolean IfMouseOver(int xCord, int yCord) {
+		setMouseOver(false);
+		if(getBounds().contains(xCord, yCord))
+			return true;
+		return false;
 	}
 	
 	//GETTERS E SETTERS

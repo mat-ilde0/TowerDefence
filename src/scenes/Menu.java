@@ -39,7 +39,7 @@ public class Menu extends GameScene implements SceneMethods{
 	/**
 	 * metodo per impostare i bottoni che servono
 	 */
-	private void initButtons() {
+	public void initButtons() {
 		
 		int w = 150;
 		int h = w/ 3;
@@ -83,7 +83,7 @@ public class Menu extends GameScene implements SceneMethods{
 	/**
 	 * disegna tutti i bottoni presenti nel menu
 	 */
-	private void drawButtons(Graphics g) {
+	public void drawButtons(Graphics g) {
 		btnPlaying.drawButton(g);
 		btnSettings.drawButton(g);
 		btnQuit.drawButton(g);
@@ -118,16 +118,36 @@ public class Menu extends GameScene implements SceneMethods{
 	@Override
 	public void mouseClicked(int xCord, int yCord) {
 		if(btnPlaying.getBounds().contains(xCord, yCord)) {
-			//SetGameState(PLAYING);
+			SetGameState(PLAYING);
 		}
+		else if(btnSettings.getBounds().contains(xCord, yCord)) {
+			SetGameState(SETTINGS);
+		}
+		else if(btnQuit.getBounds().contains(xCord, yCord))
+			System.exit(0); //metodo che fa terminare il gioco
 	}
 
-	@Override
+	/*@Override
 	public void mouseMoved(int xCord, int yCord) {
 		btnPlaying.setMouseOver(false);
 		if(btnPlaying.getBounds().contains(xCord, yCord)) {
 			btnPlaying.setMouseOver(true);
 		}
+	}*/
+	
+	/**
+	 * metodo che controlla, per ogni bottone se gli si passa sopra e in caso setta il suo booleano
+	 */
+	@Override
+	public void mouseMoved(int xCord, int yCord) {
+		
+		if(btnPlaying.IfMouseOver(xCord, yCord))
+			btnPlaying.setMouseOver(true);
+		else if(btnSettings.IfMouseOver(xCord, yCord))
+			btnSettings.setMouseOver(true);
+		else if(btnQuit.IfMouseOver(xCord, yCord))
+			btnQuit.setMouseOver(true);
+		
 	}
 
 	@Override
