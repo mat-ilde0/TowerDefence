@@ -1,6 +1,7 @@
 package scenes;
 
 import java.awt.Graphics;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,9 @@ import javax.imageio.ImageIO;
 
 import helperPackage.LoadSave;
 import main.Game;
+import userInterface.MyButton;
+import static main.GameStates.*;
+import main.GameStates;
 
 public class Menu extends GameScene implements SceneMethods{
 
@@ -19,14 +23,33 @@ public class Menu extends GameScene implements SceneMethods{
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
 	private Random random;
 	
+	//bottoni nel menu
+	private MyButton btnPlaying, btnSettings, btnQuit;
+	
 	public Menu(Game game) {
 		super(game);
 		
 		random = new Random();
 		
 		importImg();
-		
 		loadSprites();
+		initButtons();
+	}
+
+	/**
+	 * metodo per impostare i bottoni che servono
+	 */
+	private void initButtons() {
+		
+		int w = 150;
+		int h = w/ 3;
+		int x = 640 / 2 - w / 2;
+		int y = 150;
+		int yOffset = 100;
+		
+		btnPlaying = new MyButton("Play", x, y, w, h);
+		btnSettings = new MyButton("Settings", x, y + yOffset, w, h);
+		btnQuit = new MyButton("Quit", x, y + yOffset * 2, w, h);
 	}
 
 	private void importImg() {
@@ -41,15 +64,31 @@ public class Menu extends GameScene implements SceneMethods{
 		
 	}
 
+	/**
+	 * aggiunta dei bottoni
+	 */
 	@Override
 	public void render(Graphics g) {
-		for(int i = 0; i<20; i++) {
+		
+		
+		drawButtons(g);
+		
+		/*for(int i = 0; i<20; i++) {
 			for(int j = 0; j<20; j++) {
 				g.drawImage(sprites.get(getRandomInt()), i*SINGLE_IMG_WIDTH, j*SINGLE_IMG_WIDTH, null);
 			}
-		}
+		}*/
 	}
 	
+	/**
+	 * disegna tutti i bottoni presenti nel menu
+	 */
+	private void drawButtons(Graphics g) {
+		btnPlaying.drawButton(g);
+		btnSettings.drawButton(g);
+		btnQuit.drawButton(g);
+	}
+
 	/**
 	 * metodo per caricare tutte le immaginine (i singoli quadratini) come singole immagini
 	 * ossia quelle che costituiscono lo sprite presente nelle res.
@@ -62,7 +101,6 @@ public class Menu extends GameScene implements SceneMethods{
 				sprites.add(img.getSubimage(i * SINGLE_IMG_WIDTH, j * SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH));
 			}
 		}
-		
 	}
 	
 	/**
@@ -71,5 +109,38 @@ public class Menu extends GameScene implements SceneMethods{
 	private int getRandomInt() {
 		return random.nextInt(100);
 	}
+	
+	//GESTIONE EVENTI
 
+	/**
+	 * Gestisce le pressioni del mouse mentre il gioco si trova nello stato di MENU
+	 */
+	@Override
+	public void mouseClicked(int xCord, int yCord) {
+		if(btnPlaying.getBounds().contains(xCord, yCord)) {
+			//SetGameState(PLAYING);
+		}
+	}
+
+	@Override
+	public void mouseMoved(int xCord, int yCord) {
+		btnPlaying.setMouseOver(false);
+		if(btnPlaying.getBounds().contains(xCord, yCord)) {
+			btnPlaying.setMouseOver(true);
+		}
+	}
+
+	@Override
+	public void mousePressed(int xCord, int yCord) {
+		if(btnPlaying.getBounds().contains(xCord, yCord)) {
+			btnPlaying.setMousePressed(true);
+		}
+	}
+
+	@Override
+	public void mouseReleased(int xCord, int yCord) {
+		btnPlaying.resetBooleans();
+	}
+	
+	
 }

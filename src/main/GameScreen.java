@@ -9,6 +9,9 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import inputs.KeyBoardListener;
+import inputs.MyMouseListener;
+
 /**
  * componente che permette di disegnarci sopra e che consente di raggruppare altri componenti
  * @author User
@@ -20,6 +23,11 @@ public class GameScreen extends JPanel {
 	private Game game;
 	
 	private Dimension size;
+	
+
+	//variabili per la gestione degli input da mouse e da tastiera
+	private MyMouseListener myMouseListener;
+	private KeyBoardListener myKeyboardListener;
 	  
 	
 	//costruttore
@@ -53,6 +61,25 @@ public class GameScreen extends JPanel {
 		super.paintComponent(g);
 		
 		game.getRender().render(g);
+	}
+	
+	/**
+	 * metodo che si occupa dell'inizializzazione di ogni Listener e di aggiungerli
+	 */
+	public void initInputs() {
+		myMouseListener = new MyMouseListener(game);
+		myKeyboardListener = new KeyBoardListener();
+		
+		//aggiunta dei listener al gioco
+		addMouseListener(myMouseListener);
+		addMouseMotionListener(myMouseListener);
+		addKeyListener(myKeyboardListener);
+		
+		/*
+		 * The purpose of the requestFocus() is to get the focus on the 
+		 * particular component and also on the window that contains the component.
+		 */
+		requestFocus();
 	}
 	
 }

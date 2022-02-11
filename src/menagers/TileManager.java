@@ -30,9 +30,10 @@ public class TileManager {
 	 * Metodo che estrae tutti i tiles dall'immagine e che li aggiunge nell'array
 	 */
 	private void createTiles() {
+		//prima l'indice sull'asse x e poi quello sull'asse y
 		tiles.add((GRASS) = new Tile(getSprite(8,1)));
 		tiles.add((WATER) = new Tile(getSprite(0,6)));
-		tiles.add((ROAD) = new Tile(getSprite(0,0)));
+		tiles.add((ROAD) = new Tile(getSprite(9,0)));
 	}
 
 	/**
@@ -55,6 +56,8 @@ public class TileManager {
 	/**
 	 * metodo che estrae il singolo quadratino.
 	 * Gli si passa l'indice del quadratino interessato e non i pixel.
+	 * Con questo metodo si ragiona con il sistema di riferimento standard basato
+	 * su pixel e con l'asse delle ordinate orientata verso il basso.
 	 */
 	public BufferedImage getSprite(int xCord, int yCord) {
 		return atlas.getSubimage(xCord * GameScene.SINGLE_IMG_WIDTH, yCord * GameScene.SINGLE_IMG_WIDTH, 

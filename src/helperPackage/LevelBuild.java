@@ -5,8 +5,8 @@ public class LevelBuild {
 	/**
 	 * metodo che crea un array bidimensionale in cui ogni valore è un tile:
 	 * - 1 = WATER
-	 * - 2 = GRASS
-	 * - 3 = ROAD
+	 * - 0 = GRASS
+	 * - 2 = ROAD
 	 * @return
 	 */
 	public static int[][] getLevelData(){

@@ -37,7 +37,7 @@ public class Render {
 		case MENU:
 			game.getMenu().render(g);
 			break;
-		case PLAYNG:
+		case PLAYING:
 			game.getPlaying().render(g);
 			break;
 		case SETTINGS:

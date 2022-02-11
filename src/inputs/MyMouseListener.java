@@ -4,6 +4,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import main.Game;
+import main.GameStates;
+import scenes.GameScene;
+
 /**
  * classe creata per gestire gli input del mouse
  * @author User
@@ -12,7 +16,11 @@ import java.awt.event.MouseMotionListener;
 
 public class MyMouseListener implements MouseListener, MouseMotionListener{
 
+	private Game game;
 	
+	public MyMouseListener(Game game) {
+		this.game = game;
+	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -20,27 +28,73 @@ public class MyMouseListener implements MouseListener, MouseMotionListener{
 		
 	}
 
+	/**
+	 * in base a dove il mouse si trova vengono fatte determinate cose
+	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
+		switch (GameStates.gameState) {
+			case MENU:
+				game.getMenu().mouseMoved(e.getX(), e.getY());
+				break;
+			case PLAYING:
+				break;
+			case SETTINGS:
+				break;
+		}	
 		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//controllo se viene cliccato il tasto sinistro del mouse
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			
+			switch (GameStates.gameState) {
+				case MENU:
+					game.getMenu().mouseClicked(e.getX(), e.getY());
+					break;
+				case PLAYING:
+					break;
+				case SETTINGS:
+					break;
+			}			
+		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
+		if(e.getButton() == MouseEvent.BUTTON1) {
+				
+				switch (GameStates.gameState) {
+					case MENU:
+						game.getMenu().mousePressed(e.getX(), e.getY());
+						break;
+					case PLAYING:
+						break;
+					case SETTINGS:
+						break;
+				}			
+			}
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			
+			switch (GameStates.gameState) {
+				case MENU:
+					game.getMenu().mouseReleased(e.getX(), e.getY());
+					break;
+				case PLAYING:
+					break;
+				case SETTINGS:
+					break;
+			}			
+		}
 		
 	}
 

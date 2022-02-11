@@ -29,10 +29,6 @@ public class Game extends JFrame implements Runnable{
 	//variabili per la gestione dei Thread
 	private Thread gameThread;
 	
-	//variabili per la gestione degli input da mouse e da tastiera
-	private MyMouseListener myMouseListener;
-	private KeyBoardListener myKeyboardListener;
-	
 	//Classi 
 	private Render render;
 	private Menu menu;
@@ -50,7 +46,7 @@ public class Game extends JFrame implements Runnable{
 	public static void main(String[] args) {
 		Game game = new Game();
 		//game.gameLoop();
-		game.initInputs();
+		game.gameScreen.initInputs();
 		game.begin();    //start mi mandava in confusione 
 		
 	}
@@ -68,24 +64,6 @@ public class Game extends JFrame implements Runnable{
 		settings = new Settings(this);
 	}
 	
-	/**
-	 * metodo che si occupa dell'inizializzazione di ogni Listener e di aggiungerli
-	 */
-	private void initInputs() {
-		myMouseListener = new MyMouseListener();
-		myKeyboardListener = new KeyBoardListener();
-		
-		//aggiunta dei listener al gioco
-		addMouseListener(myMouseListener);
-		addMouseMotionListener(myMouseListener);
-		addKeyListener(myKeyboardListener);
-		
-		/*
-		 * The purpose of the requestFocus() is to get the focus on the 
-		 * particular component and also on the window that contains the component.
-		 */
-		requestFocus();
-	}
 	
 	/**
 	 * inizializzazione del gameThread

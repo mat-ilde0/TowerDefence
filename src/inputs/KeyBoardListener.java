@@ -25,9 +25,7 @@ public class KeyBoardListener implements KeyListener{
 		if(e.getKeyCode( ) == KeyEvent.VK_A)
 			GameStates.gameState = MENU;
 		else if(e.getKeyCode( ) == KeyEvent.VK_P)
-			GameStates.gameState = PLAYNG;
-			
-		
+			GameStates.gameState = PLAYING;
 	}
 
 	@Override

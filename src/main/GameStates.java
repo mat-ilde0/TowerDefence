@@ -9,9 +9,14 @@ package main;
 
 public enum GameStates {
 	
-	PLAYNG,
+	PLAYING,
 	MENU,
 	SETTINGS;
 	
 	public static GameStates gameState = MENU; //lo stato con cui si comincia
+	
+	public static void SetGameState(GameStates newState) {
+		gameState = newState;
+	}
+	
 }

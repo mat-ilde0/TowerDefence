@@ -35,4 +35,28 @@ public class Playing extends GameScene implements SceneMethods{
 			}
 		}
 	}
+
+	@Override
+	public void mouseClicked(int xCord, int yCord) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(int xCord, int yCord) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(int xCord, int yCord) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(int xCord, int yCord) {
+		// TODO Auto-generated method stub
+		
+	}
 }
