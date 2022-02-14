@@ -3,8 +3,10 @@ package userInterface;
 import static main.GameStates.MENU;
 import static main.GameStates.SetGameState;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ public class ButtonBar {
 	private int x, y, width, height;
 	private MyButton btnMenu;
 	private Playing playing;
+	
+	private Tile selectedTile;  //tile selezionato dall'utente con il quale vuole "costruire"
+	
 	//memorizza i bottoni assiociati a ciascun tipo di tile
 	private ArrayList<MyButton> tileButtons = new ArrayList<>();
 	
@@ -75,16 +80,57 @@ public class ButtonBar {
 		//disegno tileButtons
 		drawTileButtons(g);
 		
+		//disegnare il tile selezionato
+		drawSelectedTile(g);
+		
 	}
 	
 	/**
-	 * disegna i tiles nei rispettivi bottoni
+	 * disegna i tiles nei rispettivi bottoni e gestisce i feedback al movimento del mouse
 	 * @param g
 	 */
 	private void drawTileButtons(Graphics g) {
+		Graphics2D g2D = (Graphics2D)g;
+		
 		for (MyButton b : tileButtons) {
+		
+			//sprite
 			g.drawImage(getButtImg(b.getId()), b.x, b.y, b.width, b.height, null);
+			
+			//mouseOver
+			if(b.isMouseOver()) {
+				g.setColor(Color.white);
+			}else {
+				g.setColor(Color.black);
+			}
+			
+			//border
+			g.drawRect(b.x, b.y, b.width, b.height);
+			
+			//mousePressed -> si disegna un contorno più spesso e di un colore diverso
+			if(b.isMousePressed()) {
+				g2D.setStroke(new BasicStroke(2.5f));
+				g2D.setColor(Color.white);
+			}
+			
+			//border
+			g.drawRect(b.x, b.y, b.width, b.height);
+			//reset stroke
+			g2D.setStroke(new BasicStroke(1f));
+			
 		}
+		
+	}
+	
+	public void drawSelectedTile(Graphics g) {
+		
+		if(selectedTile != null) {
+			//disegna il tile selezionato in basso a destra, alla stessa altezza dei pulsanti
+			g.drawImage(selectedTile.getSprite(), 550, 650, 50, 50, null);
+			g.setColor(Color.black);
+			g.drawRect(550, 650, 50, 50);
+		}
+		
 	}
 	
 	private BufferedImage getButtImg(int id) {
@@ -92,28 +138,67 @@ public class ButtonBar {
 	}
 
 	//GESTIONE MOUSE
+	/**
+	 * Controlla se e dove il mouse è stato cliccato.
+	 * Nel caso in cui venga selezionato un tile -> si assegna un valore alla variabile
+	 * selectedTile -> che rappresenta ciò che l'utente vuole costruire-
+	 * @param xCord
+	 * @param yCord
+	 */
 	public void mouseClicked(int xCord, int yCord) {
 		if(btnMenu.getBounds().contains(xCord, yCord)) {
 			SetGameState(MENU);
 		}
+		else for (MyButton b : tileButtons) {
+			if(b.IfMouseOver(xCord, yCord)) {
+				selectedTile = playing.getTileManager().getTile(b.getId());
+				playing.setSelectedTile(selectedTile);
+				return;
+			}
+		}
+		
 	}
 
 	public void mouseMoved(int xCord, int yCord) {
+		//si resettano i bottoni 
+		for (MyButton b : tileButtons) 
+			b.setMouseOver(false);
+	
 		if(btnMenu.IfMouseOver(xCord, yCord))
 			btnMenu.setMouseOver(true);
+		else {
+			for(MyButton b : tileButtons) {
+				if(b.IfMouseOver(xCord, yCord)) {
+					b.setMouseOver(true);
+					return;
+				}
+			}
+		}
 	}
 
 	/**
 	 * Controlla se viene premuto il bottone per tornare al menu
 	 */
 	public void mousePressed(int xCord, int yCord) {
-		if(btnMenu.getBounds().contains(xCord, yCord)) {
+		if(btnMenu.IfMouseOver(xCord, yCord)) {
 			btnMenu.setMousePressed(true);
+		}else {
+			for (MyButton b : tileButtons) {
+				if(b.IfMouseOver(xCord, yCord)) {
+					b.setMousePressed(true);
+					return;
+				}
+			}
 		}	
 	}
 
 	public void mouseReleased(int xCord, int yCord) {
+		//reset bottone menu
 		btnMenu.resetBooleans();
+		
+		//reset TilesButtons
+		for (MyButton b : tileButtons)
+			b.resetBooleans();
 	}
 
 }

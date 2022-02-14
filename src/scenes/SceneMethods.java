@@ -47,6 +47,8 @@ public interface SceneMethods {
 	 */
 	public void drawButtons(Graphics g);
 	
+	public void mouseDragged(int xCord, int yCord);
+	
 	
 	
 }

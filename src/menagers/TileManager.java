@@ -67,5 +67,9 @@ public class TileManager {
 				GameScene.SINGLE_IMG_WIDTH, GameScene.SINGLE_IMG_WIDTH);
 	}
 	
+	//GETTERS E SETTERS
+	public Tile getTile(int index) {
+		return tiles.get(index);
+	}
 	
 }

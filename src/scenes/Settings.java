@@ -68,4 +68,10 @@ public class Settings extends GameScene implements SceneMethods{
 		
 	}
 
+	@Override
+	public void mouseDragged(int xCord, int yCord) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
