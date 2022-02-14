@@ -7,6 +7,8 @@ import helperPackage.LevelBuild;
 import main.Game;
 import menagers.TileManager;
 import userInterface.MyButton;
+import static main.GameStates.*;
+import main.GameStates;
 
 public class Playing extends GameScene implements SceneMethods{
 
@@ -55,26 +57,31 @@ public class Playing extends GameScene implements SceneMethods{
 
 	@Override
 	public void mouseClicked(int xCord, int yCord) {
-		// TODO Auto-generated method stub
-		
+		if(btnMenu.getBounds().contains(xCord, yCord)) {
+			SetGameState(MENU);
+		}
 	}
 
 	@Override
 	public void mouseMoved(int xCord, int yCord) {
-		// TODO Auto-generated method stub
-		
+		if(btnMenu.getBounds().contains(xCord, yCord)) {
+			btnMenu.setMouseOver(true);
+		}
 	}
 
+	/**
+	 * Controlla se viene premuto il bottone per tornare al menu
+	 */
 	@Override
 	public void mousePressed(int xCord, int yCord) {
-		// TODO Auto-generated method stub
-		
+		if(btnMenu.getBounds().contains(xCord, yCord)) {
+			btnMenu.setMousePressed(true);
+		}	
 	}
 
 	@Override
 	public void mouseReleased(int xCord, int yCord) {
-		// TODO Auto-generated method stub
-		
+		btnMenu.resetBooleans();
 	}
 
 	@Override

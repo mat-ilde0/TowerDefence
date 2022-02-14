@@ -1,5 +1,8 @@
 package scenes;
 
+import static main.GameStates.MENU;
+import static main.GameStates.SetGameState;
+
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -29,26 +32,28 @@ public class Settings extends GameScene implements SceneMethods{
 
 	@Override
 	public void mouseClicked(int xCord, int yCord) {
-		// TODO Auto-generated method stub
-		
+		if(btnMenu.getBounds().contains(xCord, yCord)) {
+			SetGameState(MENU);
+		}
 	}
 
 	@Override
 	public void mouseMoved(int xCord, int yCord) {
-		// TODO Auto-generated method stub
-		
+		if(btnMenu.getBounds().contains(xCord, yCord)) {
+			btnMenu.setMouseOver(true);
+		}
 	}
 
 	@Override
 	public void mousePressed(int xCord, int yCord) {
-		// TODO Auto-generated method stub
-		
+		if(btnMenu.getBounds().contains(xCord, yCord)) {
+			btnMenu.setMousePressed(true);
+		}
 	}
 
 	@Override
 	public void mouseReleased(int xCord, int yCord) {
-		// TODO Auto-generated method stub
-		
+		btnMenu.resetBooleans();
 	}
 
 	@Override

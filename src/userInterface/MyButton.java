@@ -64,6 +64,9 @@ public class MyButton {
 			g2D.setStroke(new BasicStroke(2f));
 		
 		g.drawRect(x, y, width, height);
+		
+		//reimposto lo spessore normale 
+		g2D.setStroke(new BasicStroke(1f));
 	}
 
 	/**

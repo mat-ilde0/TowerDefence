@@ -155,11 +155,19 @@ public class Menu extends GameScene implements SceneMethods{
 		if(btnPlaying.getBounds().contains(xCord, yCord)) {
 			btnPlaying.setMousePressed(true);
 		}
+		else if(btnSettings.getBounds().contains(xCord, yCord)) {
+			btnSettings.setMousePressed(true);
+		}
+		else if(btnQuit.getBounds().contains(xCord, yCord)) {
+			btnQuit.setMousePressed(true);
+		}
 	}
 
 	@Override
 	public void mouseReleased(int xCord, int yCord) {
 		btnPlaying.resetBooleans();
+		btnSettings.resetBooleans();
+		btnQuit.resetBooleans();
 	}
 	
 	
