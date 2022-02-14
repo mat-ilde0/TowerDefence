@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import helperPackage.LevelBuild;
+import helperPackage.LoadSave;
 import main.Game;
 import main.GameScreen;
 import menagers.TileManager;
@@ -35,6 +36,9 @@ public class Playing extends GameScene implements SceneMethods{
 		levels = LevelBuild.getLevelData();
 		tileManager = new TileManager();
 		buttonBar = new ButtonBar(0, 640, 640, 100, this);
+		
+		//LoadSave.createFile();
+		LoadSave.writeToFile();
 		
 	}
 	
