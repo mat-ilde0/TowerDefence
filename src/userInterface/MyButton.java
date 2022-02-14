@@ -16,18 +16,32 @@ import java.awt.Rectangle;
 
 public class MyButton {
 
-	private int x, y, width, height;
+	public int x, y, width, height, id;
 	private String text;
 	private Rectangle bounds; //per capire se il mouse è su un pulsante
 	private boolean mouseOver; // segnala se il mouse si trova sul bottone
 	private boolean mousePressed;
 	
+	//COSTRUTTORE 1 -> per bottoni normali
 	public MyButton(String text, int x, int y, int width, int height) {
 		this.height = height;
 		this.text = text;
 		this.width = width;
 		this.x = x;
 		this.y = y;
+		this.id = -1;  //per evitare possibili problemi
+		
+		initBounds();
+	}
+	
+	//COSTRUTTORE 2 -> per TileButtons
+	public MyButton(String text, int x, int y, int width, int height, int id) {
+		this.height = height;
+		this.text = text;
+		this.width = width;
+		this.x = x;
+		this.y = y;
+		this.id = id;
 		
 		initBounds();
 	}
@@ -122,6 +136,10 @@ public class MyButton {
 	
 	public Rectangle getBounds() {
 		return bounds;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public void setMouseOver(boolean mouseOver) {

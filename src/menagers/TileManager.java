@@ -30,10 +30,13 @@ public class TileManager {
 	 * Metodo che estrae tutti i tiles dall'immagine e che li aggiunge nell'array
 	 */
 	private void createTiles() {
+		
+		int id = 0;
+		
 		//prima l'indice sull'asse x e poi quello sull'asse y
-		tiles.add((GRASS) = new Tile(getSprite(8,1)));
-		tiles.add((WATER) = new Tile(getSprite(0,6)));
-		tiles.add((ROAD) = new Tile(getSprite(9,0)));
+		tiles.add((GRASS) = new Tile(getSprite(8,1), id++, "Grass"));
+		tiles.add((WATER) = new Tile(getSprite(0,6), id++, "Water"));
+		tiles.add((ROAD) = new Tile(getSprite(9,0), id++, "Road"));
 	}
 
 	/**

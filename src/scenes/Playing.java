@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import helperPackage.LevelBuild;
 import main.Game;
 import menagers.TileManager;
+import userInterface.ButtonBar;
 import userInterface.MyButton;
 import static main.GameStates.*;
 import main.GameStates;
@@ -15,7 +16,7 @@ public class Playing extends GameScene implements SceneMethods{
 	private int[][] levels;
 	private TileManager tileManager;
 	
-	private MyButton btnMenu;
+	private ButtonBar buttonBar;
 	
 	//costruttore
 	public Playing(Game game) {
@@ -23,8 +24,8 @@ public class Playing extends GameScene implements SceneMethods{
 	
 		levels = LevelBuild.getLevelData();
 		tileManager = new TileManager();
+		buttonBar = new ButtonBar(0, 640, 640, 100, this);
 		
-		initButtons();
 	}
 	
 	/**
@@ -50,22 +51,29 @@ public class Playing extends GameScene implements SceneMethods{
 		//creazione dei livelli 
 		createLevels(g);
 		
-		//disegno dei bottoni
-		drawButtons(g);
+		//disegno della barra 
+		buttonBar.draw(g);
 		
 	}
 
 	@Override
 	public void mouseClicked(int xCord, int yCord) {
-		if(btnMenu.getBounds().contains(xCord, yCord)) {
-			SetGameState(MENU);
+		if(yCord >= 640) {
+			buttonBar.mouseClicked(xCord, yCord);
+		}else {
+			//codice dopo
 		}
 	}
+	
+	/**
+	 * si controlla se il mouse sta sulla buttonBar, e in quel caso si fanno i controlli
+	 * riguardo i bottoni contenuti in essa, altrimenti si evitano
+	 */
 
 	@Override
 	public void mouseMoved(int xCord, int yCord) {
-		if(btnMenu.getBounds().contains(xCord, yCord)) {
-			btnMenu.setMouseOver(true);
+		if(yCord >= 640) {
+			buttonBar.mouseMoved(xCord, yCord);
 		}
 	}
 
@@ -74,23 +82,33 @@ public class Playing extends GameScene implements SceneMethods{
 	 */
 	@Override
 	public void mousePressed(int xCord, int yCord) {
-		if(btnMenu.getBounds().contains(xCord, yCord)) {
-			btnMenu.setMousePressed(true);
-		}	
+		if(yCord >= 640) {
+			buttonBar.mousePressed(xCord, yCord);
+		}else {
+			//codice dopo
+		}
 	}
 
 	@Override
 	public void mouseReleased(int xCord, int yCord) {
-		btnMenu.resetBooleans();
-	}
-
-	@Override
-	public void drawButtons(Graphics g) {
-		btnMenu.drawButton(g);
+		buttonBar.mouseReleased(xCord, yCord);
 	}
 
 	@Override
 	public void initButtons() {
-		btnMenu = new MyButton("Menu", 50, 50, 150, 150 / 3);
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public void drawButtons(Graphics g) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	//GETTERS E SETTERS
+	public TileManager getTileManager() {
+		return tileManager;
+	}
+	
 }

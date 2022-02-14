@@ -42,7 +42,9 @@ public class GameScreen extends JPanel {
 	 * settare la dimensione del pannello
 	 */
 	private void setPanelSize() {
-		size = new Dimension(640, 640);
+		//size = new Dimension(640, 640);
+		//la grandezza viene aumentata per farci stare la nuova barra dei bottoni 
+		size = new Dimension(640, 740);
 		
 		setMinimumSize(size);
 		setPreferredSize(size);
