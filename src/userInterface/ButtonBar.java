@@ -24,7 +24,7 @@ import scenes.Playing;
 public class ButtonBar {
 	
 	private int x, y, width, height;
-	private MyButton btnMenu;
+	private MyButton btnMenu, btnSaveLvl;
 	private Playing playing;
 	
 	private Tile selectedTile;  //tile selezionato dall'utente con il quale vuole "costruire"
@@ -57,6 +57,8 @@ public class ButtonBar {
 	public void initButtons() {
 		
 		btnMenu = new MyButton("Menu", 2, 642, 100, 30);
+		btnSaveLvl = new MyButton("Save", 2, 674, 100, 30);
+		
 		
 		//dimensioni bottoni
 		int  w = 50;
@@ -76,6 +78,7 @@ public class ButtonBar {
 	private void drawButtons(Graphics g) {
 		//disegno dei bottoni normali
 		btnMenu.drawButton(g);
+		btnSaveLvl.drawButton(g);
 		
 		//disegno tileButtons
 		drawTileButtons(g);
@@ -123,7 +126,6 @@ public class ButtonBar {
 	}
 	
 	public void drawSelectedTile(Graphics g) {
-		
 		if(selectedTile != null) {
 			//disegna il tile selezionato in basso a destra, alla stessa altezza dei pulsanti
 			g.drawImage(selectedTile.getSprite(), 550, 650, 50, 50, null);
@@ -136,19 +138,28 @@ public class ButtonBar {
 	private BufferedImage getButtImg(int id) {
 		return playing.getTileManager().getSprite(id);
 	}
+	
+	/**
+	 * metodo che gestisce il salvataggio di un livello appena editato
+	 */
+	private void saveLevel() {
+		playing.saveLevel();
+	}
 
 	//GESTIONE MOUSE
 	/**
 	 * Controlla se e dove il mouse è stato cliccato.
 	 * Nel caso in cui venga selezionato un tile -> si assegna un valore alla variabile
-	 * selectedTile -> che rappresenta ciò che l'utente vuole costruire-
+	 * selectedTile -> che rappresenta ciò che l'utente vuole costruire.
 	 * @param xCord
 	 * @param yCord
 	 */
 	public void mouseClicked(int xCord, int yCord) {
-		if(btnMenu.getBounds().contains(xCord, yCord)) {
+		if(btnMenu.IfMouseOver(xCord, yCord)) {
 			SetGameState(MENU);
 		}
+		else if(btnSaveLvl.IfMouseOver(xCord, yCord))
+			saveLevel();
 		else for (MyButton b : tileButtons) {
 			if(b.IfMouseOver(xCord, yCord)) {
 				selectedTile = playing.getTileManager().getTile(b.getId());
@@ -166,6 +177,8 @@ public class ButtonBar {
 	
 		if(btnMenu.IfMouseOver(xCord, yCord))
 			btnMenu.setMouseOver(true);
+		else if(btnSaveLvl.IfMouseOver(xCord, yCord))
+			btnSaveLvl.setMouseOver(true);
 		else {
 			for(MyButton b : tileButtons) {
 				if(b.IfMouseOver(xCord, yCord)) {
@@ -180,9 +193,11 @@ public class ButtonBar {
 	 * Controlla se viene premuto il bottone per tornare al menu
 	 */
 	public void mousePressed(int xCord, int yCord) {
-		if(btnMenu.IfMouseOver(xCord, yCord)) {
+		if(btnMenu.IfMouseOver(xCord, yCord))
 			btnMenu.setMousePressed(true);
-		}else {
+		else if(btnSaveLvl.IfMouseOver(xCord, yCord))
+			btnSaveLvl.setMousePressed(true);
+		else {
 			for (MyButton b : tileButtons) {
 				if(b.IfMouseOver(xCord, yCord)) {
 					b.setMousePressed(true);
@@ -195,6 +210,7 @@ public class ButtonBar {
 	public void mouseReleased(int xCord, int yCord) {
 		//reset bottone menu
 		btnMenu.resetBooleans();
+		btnSaveLvl.resetBooleans();
 		
 		//reset TilesButtons
 		for (MyButton b : tileButtons)

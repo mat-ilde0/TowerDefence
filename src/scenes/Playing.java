@@ -12,7 +12,6 @@ import objects.Tile;
 import userInterface.ButtonBar;
 import userInterface.MyButton;
 import static main.GameStates.*;
-import main.GameStates;
 
 public class Playing extends GameScene implements SceneMethods{
 
@@ -38,9 +37,37 @@ public class Playing extends GameScene implements SceneMethods{
 		buttonBar = new ButtonBar(0, 640, 640, 100, this);
 		
 		//LoadSave.createFile();
-		LoadSave.writeToFile();
-		
+		//LoadSave.writeToFile();
+		//LoadSave.readFromFile();
+		createDefaultLevel();
+		loadDefaultLevel();
 	}
+	
+	//GESTIONE LIVELLI
+	
+	/**
+	 * metodo che salva il livello appena editato
+	 */
+	public void saveLevel() {
+		LoadSave.saveLevel("newLevel", levels);
+	}
+	
+	/**
+	 * metodo che crea un livello (file di testo) con array riempito di soli 0
+	 */
+	private void createDefaultLevel() {
+		int[] arr = new int[400];
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = 0;
+		}
+		LoadSave.createLevel("newLevel", arr);
+	}
+	
+	private void loadDefaultLevel() {
+		levels = LoadSave.getLevelData("newLevel");
+	}
+	
+	//DISEGNO UI
 	
 	/**
 	 * metodo che si occupa di disegnare gli sprite corrispondenti basandosi sugli indici
