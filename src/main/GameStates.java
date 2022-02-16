@@ -11,7 +11,8 @@ public enum GameStates {
 	
 	PLAYING,
 	MENU,
-	SETTINGS;
+	SETTINGS,
+	EDIT;
 	
 	public static GameStates gameState = MENU; //lo stato con cui si comincia
 	

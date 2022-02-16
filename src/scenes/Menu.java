@@ -16,23 +16,13 @@ import userInterface.MyButton;
 import static main.GameStates.*;
 import main.GameStates;
 
-public class Menu extends GameScene implements SceneMethods{
-
-	private BufferedImage img;
-	
-	private ArrayList<BufferedImage> sprites = new ArrayList<>();
-	private Random random;
+public class Menu extends GameScene implements SceneMethods{	
 	
 	//bottoni nel menu
-	private MyButton btnPlaying, btnSettings, btnQuit;
+	private MyButton btnPlaying, btnSettings, btnQuit, btnEdit;
 	
 	public Menu(Game game) {
 		super(game);
-		
-		random = new Random();
-		
-		importImg();
-		loadSprites();
 		initButtons();
 	}
 
@@ -48,20 +38,9 @@ public class Menu extends GameScene implements SceneMethods{
 		int yOffset = 100;
 		
 		btnPlaying = new MyButton("Play", x, y, w, h);
-		btnSettings = new MyButton("Settings", x, y + yOffset, w, h);
-		btnQuit = new MyButton("Quit", x, y + yOffset * 2, w, h);
-	}
-
-	private void importImg() {
-		
-		InputStream fileImageStream = getClass().getResourceAsStream("/spriteatlas.png");
-				
-		try {
-			img = ImageIO.read(fileImageStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		btnEdit = new MyButton("Edit", x, y + yOffset, w, h);
+		btnSettings = new MyButton("Settings", x, y + yOffset * 2, w, h);
+		btnQuit = new MyButton("Quit", x, y + yOffset * 3, w, h);
 	}
 
 	/**
@@ -70,14 +49,8 @@ public class Menu extends GameScene implements SceneMethods{
 	@Override
 	public void render(Graphics g) {
 		
-		
 		drawButtons(g);
 		
-		/*for(int i = 0; i<20; i++) {
-			for(int j = 0; j<20; j++) {
-				g.drawImage(sprites.get(getRandomInt()), i*SINGLE_IMG_WIDTH, j*SINGLE_IMG_WIDTH, null);
-			}
-		}*/
 	}
 	
 	/**
@@ -85,29 +58,9 @@ public class Menu extends GameScene implements SceneMethods{
 	 */
 	public void drawButtons(Graphics g) {
 		btnPlaying.drawButton(g);
+		btnEdit.drawButton(g);
 		btnSettings.drawButton(g);
 		btnQuit.drawButton(g);
-	}
-
-	/**
-	 * metodo per caricare tutte le immaginine (i singoli quadratini) come singole immagini
-	 * ossia quelle che costituiscono lo sprite presente nelle res.
-	 */
-	private void loadSprites() {
-		//(le immaginine sono 10 per riga e 10 per colonna, di dim 32 pixel)
-		for(int i = 0; i < 10; i++){
-			for(int j = 0; j < 10; j++) {
-				//BufferedImage singleImg = img.getSubimage(i * SINGLE_IMG_WIDTH, j * SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH); 
-				sprites.add(img.getSubimage(i * SINGLE_IMG_WIDTH, j * SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH, SINGLE_IMG_WIDTH));
-			}
-		}
-	}
-	
-	/**
-	 *utilizzato per riempire a caso la finestra con le immaginine
-	 */
-	private int getRandomInt() {
-		return random.nextInt(100);
 	}
 	
 	//GESTIONE EVENTI
@@ -117,34 +70,35 @@ public class Menu extends GameScene implements SceneMethods{
 	 */
 	@Override
 	public void mouseClicked(int xCord, int yCord) {
-		if(btnPlaying.getBounds().contains(xCord, yCord)) {
+		if(btnPlaying.IfMouseOver(xCord, yCord)) {
 			SetGameState(PLAYING);
 		}
-		else if(btnSettings.getBounds().contains(xCord, yCord)) {
+		else if(btnSettings.IfMouseOver(xCord, yCord)) {
 			SetGameState(SETTINGS);
 		}
-		else if(btnQuit.getBounds().contains(xCord, yCord))
+		else if(btnEdit.IfMouseOver(xCord, yCord)) {
+			SetGameState(EDIT);
+		}
+		else if(btnQuit.IfMouseOver(xCord, yCord))
 			System.exit(0); //metodo che fa terminare il gioco
 	}
-
-	/*@Override
-	public void mouseMoved(int xCord, int yCord) {
-		btnPlaying.setMouseOver(false);
-		if(btnPlaying.getBounds().contains(xCord, yCord)) {
-			btnPlaying.setMouseOver(true);
-		}
-	}*/
 	
 	/**
 	 * metodo che controlla, per ogni bottone se gli si passa sopra e in caso setta il suo booleano
 	 */
 	@Override
 	public void mouseMoved(int xCord, int yCord) {
+		btnPlaying.setMouseOver(false);
+		btnEdit.setMouseOver(false);
+		btnSettings.setMouseOver(false);
+		btnQuit.setMouseOver(false);
 		
 		if(btnPlaying.IfMouseOver(xCord, yCord))
 			btnPlaying.setMouseOver(true);
 		else if(btnSettings.IfMouseOver(xCord, yCord))
 			btnSettings.setMouseOver(true);
+		else if(btnEdit.IfMouseOver(xCord, yCord))
+			btnEdit.setMouseOver(true);
 		else if(btnQuit.IfMouseOver(xCord, yCord))
 			btnQuit.setMouseOver(true);
 		
@@ -152,13 +106,16 @@ public class Menu extends GameScene implements SceneMethods{
 
 	@Override
 	public void mousePressed(int xCord, int yCord) {
-		if(btnPlaying.getBounds().contains(xCord, yCord)) {
+		if(btnPlaying.IfMouseOver(xCord, yCord)) {
 			btnPlaying.setMousePressed(true);
 		}
-		else if(btnSettings.getBounds().contains(xCord, yCord)) {
+		else if(btnSettings.IfMouseOver(xCord, yCord)) {
 			btnSettings.setMousePressed(true);
 		}
-		else if(btnQuit.getBounds().contains(xCord, yCord)) {
+		if(btnEdit.IfMouseOver(xCord, yCord)) {
+			btnEdit.setMousePressed(true);
+		}
+		else if(btnQuit.IfMouseOver(xCord, yCord)) {
 			btnQuit.setMousePressed(true);
 		}
 	}
@@ -167,6 +124,7 @@ public class Menu extends GameScene implements SceneMethods{
 	public void mouseReleased(int xCord, int yCord) {
 		btnPlaying.resetBooleans();
 		btnSettings.resetBooleans();
+		btnEdit.resetBooleans();
 		btnQuit.resetBooleans();
 	}
 

@@ -126,7 +126,6 @@ public class MyButton {
 	 * @return
 	 */
 	public boolean IfMouseOver(int xCord, int yCord) {
-		setMouseOver(false);
 		if(getBounds().contains(xCord, yCord))
 			return true;
 		return false;

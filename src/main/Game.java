@@ -7,8 +7,10 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import helperPackage.LoadSave;
 import inputs.KeyBoardListener;
 import inputs.MyMouseListener;
+import menagers.TileManager;
 import scenes.*;
 
 /**
@@ -34,11 +36,16 @@ public class Game extends JFrame implements Runnable{
 	private Menu menu;
 	private Playing playing;
 	private Settings settings;
+	private Editing editing;
+	
+	private TileManager tileManager;
 	
 	//costruttore
 	public Game(){
 		initClasses();
+		createDefaultLevel();
 		initialize();
+		
 	}
 	
 
@@ -58,10 +65,13 @@ public class Game extends JFrame implements Runnable{
 	private void initClasses() {
 		render = new Render(this);
 		gameScreen = new GameScreen(this);
+		tileManager = new TileManager();
+		
 		
 		menu = new Menu(this);
 		playing = new Playing(this);
 		settings = new Settings(this);
+		editing = new Editing(this);
 	}
 	
 	
@@ -89,6 +99,17 @@ public class Game extends JFrame implements Runnable{
 		
 		setVisible(true);
 
+	}
+	
+	/**
+	 * metodo che crea un livello (file di testo) con array riempito di soli 0
+	 */
+	private void createDefaultLevel() {
+		int[] arr = new int[400];
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = 0;
+		}
+		LoadSave.createLevel("newLevel", arr);
 	}
 	
 	/**
@@ -157,7 +178,6 @@ public class Game extends JFrame implements Runnable{
 		return render;
 	}
 
-
 	public Menu getMenu() {
 		return menu;
 	}
@@ -168,6 +188,14 @@ public class Game extends JFrame implements Runnable{
 
 	public Settings getSettings() {
 		return settings;
+	}
+	
+	public Editing geteEditor() {
+		return editing;
+	}
+	
+	public TileManager getTileManager() {
+		return tileManager;
 	}
 
 }
