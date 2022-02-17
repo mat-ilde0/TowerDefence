@@ -81,6 +81,7 @@ public class MyButton {
 		
 		//reimposto lo spessore normale 
 		g2D.setStroke(new BasicStroke(1f));
+				
 	}
 
 	/**

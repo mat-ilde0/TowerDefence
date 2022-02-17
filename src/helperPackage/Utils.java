@@ -1,7 +1,7 @@
 package helperPackage;
 
 import java.util.ArrayList;
-
+//cose andate bene 
 public class Utils {
 
 	/**
@@ -15,7 +15,7 @@ public class Utils {
 		
 		for(int j = 0; j < newArr.length; j++)
 			for(int i = 0; i < newArr[j].length; i++) {
-				int index = j * ySize + i;
+				int index = j * xSize + i;
 				newArr[j][i] = list.get(index);
 			}
 		return newArr;

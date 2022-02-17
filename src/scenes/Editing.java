@@ -151,7 +151,9 @@ public class Editing extends GameScene implements SceneMethods{
 
 	@Override
 	public void mousePressed(int xCord, int yCord) {
-		
+		if(yCord >= 640) {
+			toolBar.mousePressed(xCord, yCord);
+		}
 	}
 	
 	@Override
@@ -170,7 +172,9 @@ public class Editing extends GameScene implements SceneMethods{
 		
 	@Override
 	public void mouseReleased(int xCord, int yCord) {
-		
+		if(yCord >= 640) {
+			toolBar.mouseReleased(xCord, yCord);
+		}
 	}
 
 	@Override
